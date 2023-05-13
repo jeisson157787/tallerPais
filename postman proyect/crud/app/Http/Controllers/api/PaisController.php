@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\Pais;
+use App\Models\Departaments;
 
 class PaisController extends Controller
 {
@@ -84,5 +85,29 @@ class PaisController extends Controller
                 'Errors' => $th
             ], 400); 
         }
+    }
+    public function solution2($country_id) {
+        try {
+          $departments = Departaments::select('name')->where('pais_id', $country_id)->count();
+          return response()->json([
+             $departments
+          ],200);
+        } catch (\Throwable $th) {
+          return response()->json([
+              'errors'=> $th
+           ],400);
+        }
+    }
+    public function solution1($country_id) {
+            try {
+              $departments = Departaments::select('name')->where('pais_id', $country_id)->get();
+              return response()->json([
+                 $departments
+              ],200);
+            } catch (\Throwable $th) {
+              return response()->json([
+                  'errors'=> $th
+               ],400);
+            }
     }
 }

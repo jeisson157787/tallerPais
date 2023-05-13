@@ -85,4 +85,31 @@ class SchoolController extends Controller
             ], 400); 
         }
     }
+    public function solution3($country_id) {
+        try {
+            $school = School::select('name')->where('pais_id', $country_id)->get();
+          return response()->json([
+            $school
+          ],200);
+        } catch (\Throwable $th) {
+          return response()->json([
+              'errors'=> $th
+           ],400);
+        }
+    }
+    public function solution8() {
+        try {
+            $school = School::select('school.name', School::raw('count(*) as total_users'))
+                ->join('users', 'school.id', '=', 'users.school_id')
+                ->groupBy('school.id', 'school.name')
+                ->get();
+            return response()->json([
+                $school
+          ],200);
+        } catch (\Throwable $th) {
+            return response()->json([
+              'errors'=> $th
+            ],400);
+        }
+    }
 }

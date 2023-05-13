@@ -5,6 +5,9 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Users;
+use App\Models\School;
+use App\Models\Departaments;
+use App\Models\Pais;
 
 class UsersController extends Controller
 {
@@ -83,5 +86,64 @@ class UsersController extends Controller
                 'Errors' => $th
             ], 400); 
         }
+    }
+    public function solution4($school_id) {
+        try {
+            $user = Users::select('name','lastname')->where('school_id', $school_id)->get();
+            $school = School::select('name')->where('id', $school_id)->get();
+          return response()->json([
+            $school,$user
+          ],200);
+        } catch (\Throwable $th) {
+          return response()->json([
+              'errors'=> $th
+           ],500);
+        }
+    }
+    public function solution5($pais_id) {
+        try {
+            $pais = Pais::select('name')->where('id', $pais_id)->get();
+            $users = Users::select('users.id','users.name', 'users.lastname')
+                ->join('departaments', 'users.departaments_id', '=', 'departaments.id')
+                ->join('pais', 'departaments.pais_id', '=', 'pais.id')
+                ->where('pais.id', $pais_id)
+                ->get();
+            
+          return response()->json([
+            $pais,$users
+          ],200);
+        } catch (\Throwable $th) {
+          return response()->json([
+              'errors'=> $th
+           ],500);
+        }
+    }
+    public function solution6() {
+        try {
+            $users = Users::select('name','lastname','email')->where('email', 'LIKE', '%@gmail.com')->get();
+            
+          return response()->json([
+            $users
+          ],200);
+        } catch (\Throwable $th) {
+          return response()->json([
+              'errors'=> $th
+           ],500);
+        }
+    }
+    public function solution7() {
+        try {
+            $users = Users::select('name','lastname', Users::raw('DATEDIFF(CONCAT(YEAR(CURDATE()), "-", DATE_FORMAT(date_birth, "%m-%d")), CURDATE()) AS dias_faltantes'))
+                    ->get();
+            
+            return response()->json([
+                $users
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'errors' => $th
+            ], 500);
+        }
+    
     }
 }

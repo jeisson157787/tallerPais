@@ -26,3 +26,12 @@ Route::apiResource('users', UsersController::class);
 Route::apiResource('pais', PaisController::class);
 Route::apiResource('departments', DepartamentsController::class);
 Route::apiResource('school', SchoolController::class);
+
+Route::get('pais_departamento/{id}',[PaisController::class, 'solution1']);
+Route::get('pais_departamentoContador/{id}',[PaisController::class, 'solution2']);
+Route::get('pais_school/{id}',[SchoolController::class, 'solution3']);
+Route::get('users_school/{id}',[UsersController::class, 'solution4']);
+Route::get('users_pais/{id}',[UsersController::class, 'solution5']);
+Route::get('usersCorreos',[UsersController::class, 'solution6']);
+Route::get('usersDias',[UsersController::class, 'solution7']);
+Route::get('colegio_usuarios',[SchoolController::class, 'solution8']);
